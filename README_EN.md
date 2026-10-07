@@ -118,3 +118,20 @@ firmware signature authentication. Never expose ports to the Internet. Origin ch
 are not user authentication.
 
 This repository distributes firmware and documentation, not the complete buildable SDK source.
+
+## Version History
+
+### 2.0.5 — 2026-10-08
+
+- Optimized relay drive/release for faster successive channel and all-channel control
+- Web restore support for stock 1.0.66 and local-patched 1.0.68 FWR
+- Retained image-format, checksum and flash-readback validation without a fixed restore-file digest allowlist
+
+### 2.0.0 — 2026-10-07
+
+- Initial public standalone firmware release
+- SoftAP/LAN Wi-Fi setup and automatic reconnection
+- Individual/all relay control, physical buttons/LEDs and persistent channel state
+- Total/per-channel sensors and Home Assistant MQTT Discovery integration
+- Korean/English web dashboard, SSE updates and FWR web OTA
+- Persistent settings/energy and enabled watchdog
