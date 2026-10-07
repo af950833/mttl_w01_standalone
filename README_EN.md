@@ -5,6 +5,8 @@
 Direct Wi-Fi web control and Home Assistant MQTT integration for the LG U+
 MTTL-W01, without a separate backend or router DNAT.
 
+![MTTL-W01 web dashboard](docs/dashboard.png)
+
 ## Download
 
 **2.0.0 / build `0006a05288fbbb45` · October 7, 2026**

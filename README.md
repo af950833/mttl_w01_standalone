@@ -5,6 +5,8 @@
 LG U+ MTTL-W01을 별도 백엔드 서버나 DNAT 없이 Wi-Fi 웹 대시보드와
 MQTT로 Home Assistant에 연결하는 독립 펌웨어입니다.
 
+![MTTL-W01 웹 대시보드](docs/dashboard.png)
+
 ## 다운로드
 
 **2.0.0 / build `0006a05288fbbb45` · 2026-10-07**
