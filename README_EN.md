@@ -9,9 +9,17 @@ MTTL-W01, without a separate backend or router DNAT.
 
 ## Download
 
-**2.0.0 / build `0006a05288fbbb45` · October 7, 2026**
+**2.0.5 / build `176415eb304c9d70` · October 8, 2026**
 
-[Download comMTTL-W01_2.0.0.fwr](firmware/comMTTL-W01_2.0.0.fwr)
+[Download comMTTL-W01_2.0.5.fwr](firmware/comMTTL-W01_2.0.5.fwr)
+
+### Changes in 2.0.5
+
+- Optimized relay drive/release for faster successive channel and all-channel control
+- Firmware-tab restore support for stock `1.0.66` and local-patched `1.0.68` FWR
+- Format, checksum and flash-readback validation without a fixed restore-file SHA-256 allowlist
+
+Existing standalone users can update through the device's **Firmware** tab.
 
 Compatibility with every hardware variant is not guaranteed. Failed installation
 may require debugger recovery. Overload/overtemperature protection and measurement
@@ -26,6 +34,7 @@ accuracy are unverified; do not rely on this firmware as a safety system.
 - HA MQTT Discovery: five switches and twenty sensors
 - SSE updates, optimistic web controls and confirmed logical-state reporting to HA
 - FWR web OTA, persistent settings/energy and enabled watchdog
+- Restore to stock 1.0.66 or local-patched 1.0.68 FWR
 
 Sensors update approximately every ten seconds. Channel current subtracts 0.019 A
 and clamps negative results to zero. Relay state is logical, not physical contact
@@ -76,10 +85,27 @@ the aggregate switch ends in `_all`. Existing conflicts may cause HA to add a su
 2. Open the device's Firmware tab, select the file and upload.
 3. Keep power connected, reconnect after automatic reboot and verify the build.
 
-Do not upload BIN files, full dumps or stock firmware to the standalone updater
-(stock FWR recovery is planned for a future update).
+Do not upload BIN files or full-flash dumps to the standalone updater.
 No manual SHA-256 or token is required; internal image/slot checks remain enabled.
 If transfer disconnects, close other device tabs, check the running build, then retry.
+
+## Restore to stock / local firmware
+
+On **2.0.5 or later**, select a stock `1.0.66` or backend-oriented local-patched
+`1.0.68` FWR in the Firmware tab and upload it. Keep power connected throughout
+transfer and reboot. Other versions and arbitrary formats are unsupported.
+
+- Restoration ends the standalone web dashboard and direct HA MQTT integration.
+- Stock firmware may require its original provisioning/service setup again.
+- Local 1.0.68 requires a file generated for the correct backend IP and that backend server.
+- Remove remaining standalone HA entities manually if needed.
+- To return to standalone, use the **initial-installation OTA tool** described above.
+
+There is no fixed file-digest allowlist. Image format, size, checksum, SHA-256
+receive/readback consistency and slot compatibility are still checked. These
+checks are not signature authentication; use FWR files from trusted sources only.
+The OTA/restore path passed 142 ARM-execution tests with mocked flash;
+physical 1.0.66/1.0.68 restore boot still needs separate verification.
 
 ## Verification and safety
 
