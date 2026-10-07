@@ -7,7 +7,7 @@ MTTL-W01, without a separate backend or router DNAT.
 
 ## Download
 
-**2.0.0 / build `0006a05288fbbb45` · October 7, 2026 · Experimental**
+**2.0.0 / build `0006a05288fbbb45` · October 7, 2026**
 
 [Download comMTTL-W01_2.0.0.fwr](firmware/comMTTL-W01_2.0.0.fwr)
 

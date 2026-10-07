@@ -7,7 +7,7 @@ MQTT로 Home Assistant에 연결하는 독립 펌웨어입니다.
 
 ## 다운로드
 
-**2.0.0 / build `0006a05288fbbb45` · 2026-10-07 · 실험용 배포**
+**2.0.0 / build `0006a05288fbbb45` · 2026-10-07**
 
 [comMTTL-W01_2.0.0.fwr 다운로드](firmware/comMTTL-W01_2.0.0.fwr)
 
