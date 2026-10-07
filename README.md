@@ -65,7 +65,7 @@ MQTT로 Home Assistant에 연결하는 독립 펌웨어입니다.
 ## Home Assistant
 
 1. HA에서 MQTT 통합을 준비합니다.
-2. 기기 웹의 MQTT 탭에서 브로커 주소·포트·사용자·암호·토픽 접두사를 입력합니다.
+2. 기기 웹의 MQTT 탭에서 브로커 주소·포트·사용자·암호를 입력합니다.
 3. MQTT를 활성화하고 저장하면 HA에 기기와 엔티티가 자동 등록됩니다.
 
 Discovery 접두사는 `homeassistant`이며 ID는

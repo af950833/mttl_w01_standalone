@@ -64,7 +64,7 @@ saved-network retries, while manually entered setup mode stays available.
 ## Home Assistant
 
 1. Configure HA's MQTT integration.
-2. Enter broker address, port, credentials and topic prefix in the device MQTT tab.
+2. Enter broker address, port and credentials in the device MQTT tab.
 3. Enable MQTT and save; Discovery registers the device and entities.
 
 Discovery uses `homeassistant`. IDs follow `switch.mttl_<last 7 MAC digits>_sw1`;
