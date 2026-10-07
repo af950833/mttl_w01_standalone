@@ -91,6 +91,8 @@ If transfer disconnects, close other device tabs, check the running build, then 
 
 ## Restore to stock / local firmware
 
+Stock `1.0.66` FWR is available in the [original repository's stock firmware directory](https://github.com/af950833/mttl_w01/tree/main/work/firmware/1.0.66).
+
 On **2.0.5 or later**, select a stock `1.0.66` or backend-oriented local-patched
 `1.0.68` FWR in the Firmware tab and upload it. Keep power connected throughout
 transfer and reboot. Other versions and arbitrary formats are unsupported.
