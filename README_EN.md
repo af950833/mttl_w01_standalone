@@ -9,9 +9,17 @@ MTTL-W01, without a separate backend or router DNAT.
 
 ## Download
 
-**2.0.5 / build `176415eb304c9d70` · October 8, 2026**
+**2.0.6 / build `dec1f01ee3e69eca` · October 8, 2026**
 
-[Download comMTTL-W01_2.0.5.fwr](firmware/comMTTL-W01_2.0.5.fwr)
+[Download comMTTL-W01_2.0.6.fwr](firmware/comMTTL-W01_2.0.6.fwr)
+
+SHA-256: `7ada102bf568e44a5d1b2ddcc22cfad95a62a2d57d633a4d2b928ef0e39df47d`
+
+### Changes in 2.0.6
+
+- Publish confirmed aggregate and channel ON/OFF states with `retain=true` so HA receives them after a late subscription
+- Republish unchanged channel states when HA reconnects
+- Keep sensor readings transient with existing expiry behavior
 
 ### Changes in 2.0.5
 
@@ -122,6 +130,13 @@ are not user authentication.
 This repository distributes firmware and documentation, not the complete buildable SDK source.
 
 ## Version History
+
+### 2.0.6 — 2026-10-08
+
+- Publish aggregate and channel switch states with `retain=true`
+- Republish unchanged channel states when HA reconnects
+- Keep sensor publications at `retain=false`
+- Verified 2.0.6 OTA, reboot, MQTT reconnection and preserved channel states on the development device
 
 ### 2.0.5 — 2026-10-08
 
