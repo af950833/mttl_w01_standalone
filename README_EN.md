@@ -20,7 +20,6 @@ SHA-256: `acc3a35811bf662e039edb0180aa7f6a9383d469dbde096704befce71f246d65`
 - Remove HA Discovery registrations before disconnecting when MQTT is disabled
 - Retry cleanup after broker connectivity returns; rediscover when enabled again
 - Show ON channel buttons with a green background and white text in the web dashboard
-- Preserve retained switch-state publication introduced in 2.0.6
 
 ### Changes in 2.0.6
 
@@ -148,7 +147,6 @@ This repository distributes firmware and documentation, not the complete buildab
 - Remove Discovery registrations for five switches and twenty sensors, plus retained availability, when MQTT is disabled
 - Fence deletion delivery with a broker response, retry after connection failures, and rediscover when enabled again
 - Green ON buttons in the web dashboard; unchanged OFF styling
-- Based on 2.0.6, preserving retained switch-state publication and existing functionality
 
 ### 2.0.6 — 2026-10-08
 
