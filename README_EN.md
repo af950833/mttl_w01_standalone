@@ -9,11 +9,18 @@ MTTL-W01, without a separate backend or router DNAT.
 
 ## Download
 
-**2.0.6 / build `dec1f01ee3e69eca` · October 8, 2026**
+**2.0.7 / build `d3af2896285623ca` · October 9, 2026**
 
-[Download comMTTL-W01_2.0.6.fwr](firmware/comMTTL-W01_2.0.6.fwr)
+[Download comMTTL-W01_2.0.7.fwr](firmware/comMTTL-W01_2.0.7.fwr)
 
-SHA-256: `7ada102bf568e44a5d1b2ddcc22cfad95a62a2d57d633a4d2b928ef0e39df47d`
+SHA-256: `acc3a35811bf662e039edb0180aa7f6a9383d469dbde096704befce71f246d65`
+
+### Changes in 2.0.7
+
+- Remove HA Discovery registrations before disconnecting when MQTT is disabled
+- Retry cleanup after broker connectivity returns; rediscover when enabled again
+- Show ON channel buttons with a green background and white text in the web dashboard
+- Preserve retained switch-state publication introduced in 2.0.6
 
 ### Changes in 2.0.6
 
@@ -84,6 +91,11 @@ saved-network retries, while manually entered setup mode stays available.
 2. Enter broker address, port and credentials in the device MQTT tab.
 3. Enable MQTT and save; Discovery registers the device and entities.
 
+From 2.0.7, disabling MQTT and saving removes HA Discovery registrations.
+Cleanup retries when broker connectivity returns; enabling MQTT again registers
+the entities again. Keep the address and credentials of the broker holding the
+existing registrations so cleanup can reach it.
+
 Discovery uses `homeassistant`. IDs follow `switch.mttl_<last 7 MAC digits>_sw1`;
 the aggregate switch ends in `_all`. Existing conflicts may cause HA to add a suffix.
 
@@ -130,6 +142,13 @@ are not user authentication.
 This repository distributes firmware and documentation, not the complete buildable SDK source.
 
 ## Version History
+
+### 2.0.7 — 2026-10-09
+
+- Remove Discovery registrations for five switches and twenty sensors, plus retained availability, when MQTT is disabled
+- Fence deletion delivery with a broker response, retry after connection failures, and rediscover when enabled again
+- Green ON buttons in the web dashboard; unchanged OFF styling
+- Based on 2.0.6, preserving retained switch-state publication and existing functionality
 
 ### 2.0.6 — 2026-10-08
 
