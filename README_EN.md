@@ -111,7 +111,7 @@ There is no fixed file-digest allowlist. Image format, size, checksum, SHA-256
 receive/readback consistency and slot compatibility are still checked. These
 checks are not signature authentication; use FWR files from trusted sources only.
 The OTA/restore path passed 142 ARM-execution tests with mocked flash;
-physical 1.0.66/1.0.68 restore boot still needs separate verification.
+restoration to local-patched `1.0.68` and successful boot have been verified on a physical device. Restoration and boot of stock `1.0.66` have not yet been physically verified.
 
 ## Verification and safety
 
