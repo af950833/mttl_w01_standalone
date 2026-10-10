@@ -15,31 +15,6 @@ MTTL-W01, without a separate backend or router DNAT.
 
 SHA-256: `760159e7beef90c159a7b2ff0bc6cd3dd41dceec51eb756df094ee22c1d0edc2`
 
-### Changes in 2.0.8
-
-- Protection tab with independently enabled temperature, total-current and total-power thresholds saved to flash
-- All OFF on the first excessive channel temperature or two consecutive fresh rounds of excessive total current/power
-- Current protection sums channel readings after subtracting 0.019 A per channel and clamping to zero
-- Live values and units beside protection sliders
-
-### Changes in 2.0.7
-
-- Remove HA Discovery registrations before disconnecting when MQTT is disabled
-- Retry cleanup after broker connectivity returns; rediscover when enabled again
-- Show ON channel buttons with a green background and white text in the web dashboard
-
-### Changes in 2.0.6
-
-- Publish confirmed aggregate and channel ON/OFF states with `retain=true` so HA receives them after a late subscription
-- Republish unchanged channel states when HA reconnects
-- Keep sensor readings transient with existing expiry behavior
-
-### Changes in 2.0.5
-
-- Optimized relay drive/release for faster successive channel and all-channel control
-- Firmware-tab restore support for stock `1.0.66` and local-patched `1.0.68` FWR
-- Format, checksum and flash-readback validation without a fixed restore-file SHA-256 allowlist
-
 Existing standalone users can update through the device's **Firmware** tab.
 
 Compatibility with every hardware variant is not guaranteed. Failed installation
@@ -167,22 +142,25 @@ The new 2.0.8 settings codec cannot be read by 2.0.7 or earlier, so settings may
 
 ### 2.0.8 — 2026-10-10
 
-- Temperature, corrected total-current and total-power protection with persistent settings
-- First-excess temperature cutoff; two-consecutive-round current/power cutoff; sensor errors are reported without cutoff
-- Live slider values/units and migration of existing settings, energy and logical relay state
+- Added a Protection tab with slider-adjustable temperature, total-current and total-power thresholds and independent enable controls
+- Persist applied settings across reboot/OTA; migrate existing configuration, energy checkpoints and logical relay state
+- All OFF on the first excessive channel temperature or two consecutive fresh rounds of excessive total current/power
+- Current protection sums channel readings after subtracting 0.019 A per channel and clamping to zero; existing power conversion is unchanged
+- Read failures report errors and reset affected consecutive counters; no protection lock or automatic ON after cutoff
+- Display live slider values/units in a dedicated column that stays visible while adjusting
 - Verified 1000W power cutoff on the test device; temperature/current cutoff not yet physically verified
 
 ### 2.0.7 — 2026-10-09
 
 - Remove Discovery registrations for five switches and twenty sensors, plus retained availability, when MQTT is disabled
 - Fence deletion delivery with a broker response, retry after connection failures, and rediscover when enabled again
-- Green ON buttons in the web dashboard; unchanged OFF styling
+- Green backgrounds and white text for web ON buttons; unchanged OFF styling
 
 ### 2.0.6 — 2026-10-08
 
-- Publish aggregate and channel switch states with `retain=true`
+- Publish confirmed aggregate and channel switch states with `retain=true` so HA receives the last reported state after a late subscription
 - Republish unchanged channel states when HA reconnects
-- Keep sensor publications at `retain=false`
+- Keep sensor publications at `retain=false` with existing real-time updates and expiry behavior
 - Verified 2.0.6 OTA, reboot, MQTT reconnection and preserved channel states on the development device
 
 ### 2.0.5 — 2026-10-08
