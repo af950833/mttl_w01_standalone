@@ -9,11 +9,11 @@ MTTL-W01, without a separate backend or router DNAT.
 
 ## Download
 
-**2.0.8 / build `1ac118f628ab54d1` · October 10, 2026**
+**2.0.9 / build `4ccbc26ad84a803d` · October 10, 2026**
 
-[Download comMTTL-W01_2.0.8.fwr](firmware/comMTTL-W01_2.0.8.fwr)
+[Download comMTTL-W01_2.0.9.fwr](firmware/comMTTL-W01_2.0.9.fwr)
 
-SHA-256: `760159e7beef90c159a7b2ff0bc6cd3dd41dceec51eb756df094ee22c1d0edc2`
+SHA-256: `30f2816cce89d7503759c4e630b1e6247ca10066a96a892b2524624e5d971d1e`
 
 Existing standalone users can update through the device's **Firmware** tab.
 
@@ -33,6 +33,7 @@ Power cutoff was verified on the test device using a 1000W threshold and a hair 
 - SSE updates, optimistic web controls and confirmed logical-state reporting to HA
 - FWR web OTA, persistent settings/energy and enabled watchdog
 - Restore to stock 1.0.66 or local-patched 1.0.68 FWR
+- Reset total and per-channel energy when holding the physical main button for ten seconds to enter Wi-Fi setup
 
 Sensors update approximately every ten seconds. Channel current subtracts 0.019 A
 and clamps negative results to zero. Relay state is logical, not physical contact
@@ -138,7 +139,24 @@ Read failures report an error and reset the affected consecutive counter. Existi
 There is no protection lock or automatic ON. Users may turn channels on again; continued excess trips again.
 The new 2.0.8 settings codec cannot be read by 2.0.7 or earlier, so settings may not survive a downgrade to older standalone firmware.
 
+## Reset cumulative energy
+
+**On 2.0.9 and later, holding the physical main button for at least ten seconds to enter setup SoftAP resets total and all four channel energy readings to zero. This also resets energy when entering setup solely to change Wi-Fi.**
+
+Current metering counters become the new baseline, so only subsequent increments are accumulated. The reset is immediately saved to flash and survives reboot. Relay states, Wi-Fi/MQTT/protection settings and device/channel names are preserved. Ordinary reboot and automatic SoftAP entry do not reset energy.
+
+A held button triggers only once. Setup entry waits for valid channel counters and successful persistence, so sensor/storage errors may delay entry. A failed save preserves previous totals.
+
 ## Version History
+
+### 2.0.9 — 2026-10-10
+
+- Reset total and per-channel cumulative energy on a ten-second physical main-button hold that enters setup SoftAP
+- Rebase on current metering counters and immediately persist the reset; accumulate only subsequent increments
+- Preserve relay states and other settings; ordinary reboot and automatic SoftAP entry do not reset energy
+- Preserve previous totals on save failure and prevent repeated resets during a single hold
+- Improve web-asset gzip compression without reducing existing heap/stack reservations
+- Passed offline reset/persistence/reboot checks and 142 mocked OTA tests; energy reset verified on the test device
 
 ### 2.0.8 — 2026-10-10
 
