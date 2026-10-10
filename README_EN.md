@@ -9,11 +9,18 @@ MTTL-W01, without a separate backend or router DNAT.
 
 ## Download
 
-**2.0.7 / build `d3af2896285623ca` · October 9, 2026**
+**2.0.8 / build `1ac118f628ab54d1` · October 10, 2026**
 
-[Download comMTTL-W01_2.0.7.fwr](firmware/comMTTL-W01_2.0.7.fwr)
+[Download comMTTL-W01_2.0.8.fwr](firmware/comMTTL-W01_2.0.8.fwr)
 
-SHA-256: `acc3a35811bf662e039edb0180aa7f6a9383d469dbde096704befce71f246d65`
+SHA-256: `760159e7beef90c159a7b2ff0bc6cd3dd41dceec51eb756df094ee22c1d0edc2`
+
+### Changes in 2.0.8
+
+- Protection tab with independently enabled temperature, total-current and total-power thresholds saved to flash
+- All OFF on the first excessive channel temperature or two consecutive fresh rounds of excessive total current/power
+- Current protection sums channel readings after subtracting 0.019 A per channel and clamping to zero
+- Live values and units beside protection sliders
 
 ### Changes in 2.0.7
 
@@ -36,10 +43,12 @@ SHA-256: `acc3a35811bf662e039edb0180aa7f6a9383d469dbde096704befce71f246d65`
 Existing standalone users can update through the device's **Firmware** tab.
 
 Compatibility with every hardware variant is not guaranteed. Failed installation
-may require debugger recovery. Overload/overtemperature protection and measurement
-accuracy are unverified; do not rely on this firmware as a safety system.
+may require debugger recovery. Software protection cannot replace hardware safety devices.
+Power cutoff was verified on the test device using a 1000W threshold and a hair dryer load. Current/temperature cutoff and measurement accuracy still require separate hardware verification.
 
 ## Features
+
+- Configurable temperature, total-current and total-power protection with all-channel cutoff
 
 - SoftAP Wi-Fi setup/scan, LAN Wi-Fi changes and automatic reconnection
 - Individual/all channel control, physical buttons and LEDs
@@ -140,7 +149,28 @@ are not user authentication.
 
 This repository distributes firmware and documentation, not the complete buildable SDK source.
 
+## Protection settings
+
+| Item | Range | Initial default | Trip condition |
+| --- | --- | --- | --- |
+| Temperature | 50–90 °C | Enabled, 90 °C | First excess on any channel |
+| Total current | 1–16 A | Enabled, 16 A | Corrected sum exceeds threshold in two consecutive rounds |
+| Total power | 100–3000 W | Enabled, 3000 W | Total power exceeds threshold in two consecutive rounds |
+
+Press **Apply** to persist settings across reboot and OTA. First upgrade from an older release enables the defaults above.
+A complete sequential measurement round takes approximately 10 seconds; this is not continuous monitoring. Equality does not trip.
+Read failures report an error and reset the affected consecutive counter. Existing power conversion is unchanged.
+There is no protection lock or automatic ON. Users may turn channels on again; continued excess trips again.
+The new 2.0.8 settings codec cannot be read by 2.0.7 or earlier, so settings may not survive a downgrade to older standalone firmware.
+
 ## Version History
+
+### 2.0.8 — 2026-10-10
+
+- Temperature, corrected total-current and total-power protection with persistent settings
+- First-excess temperature cutoff; two-consecutive-round current/power cutoff; sensor errors are reported without cutoff
+- Live slider values/units and migration of existing settings, energy and logical relay state
+- Verified 1000W power cutoff on the test device; temperature/current cutoff not yet physically verified
 
 ### 2.0.7 — 2026-10-09
 
