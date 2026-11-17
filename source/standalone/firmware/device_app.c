@@ -1,9 +1,14 @@
 #include "device_app.h"
+#include "httpd.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+mttl_device_app *g_device_app = NULL;
+
 static void publish_sample(mttl_device_app *,const char *,uint32_t);
 static int quote(const char *s,char *out,size_t cap){size_t j=0;unsigned char c;if(cap<3)return 0;out[j++]='"';while(*s){c=(unsigned char)*s++;if(c<32)return 0;if(c=='"'||c=='\\'){if(j+2>=cap)return 0;out[j++]='\\';}if(j+2>=cap)return 0;out[j++]=(char)c;}out[j++]='"';out[j]=0;return 1;}
-void mttl_device_init(mttl_device_app *d,uint64_t reference){memset(d,0,sizeof(*d));mttl_settings_default(&d->settings);mttl_control_init(&d->control,100);mttl_hardware_init(&d->hardware);mttl_mqtt_engine_init(&d->mqtt);mttl_ntp_client_init(&d->ntp,reference);}
+void mttl_device_init(mttl_device_app *d,uint64_t reference){memset(d,0,sizeof(*d));mttl_settings_default(&d->settings);mttl_control_init(&d->control,100);mttl_hardware_init(&d->hardware);mttl_mqtt_engine_init(&d->mqtt);mttl_ntp_client_init(&d->ntp,reference);g_device_app=d;}
 int mttl_device_load(mttl_device_app *d,const mttl_settings_io *io,mttl_config_workspace *workspace){int result;if(!workspace)return -1;result=mttl_config_load(io,workspace,&d->settings);if(result>=0){d->persistent=1;++d->revision;}return result;}
 int mttl_device_configure(mttl_device_app *d,const uint8_t *body,size_t size,const mttl_settings_io *io,mttl_config_workspace *workspace){
     mttl_settings candidate;int result=0;volatile uint8_t *p=(volatile uint8_t *)&candidate;size_t i;
@@ -110,4 +115,36 @@ size_t mttl_settings_json(const mttl_settings *s,int persistent,char *out,size_t
     if(n<0||(size_t)n+103>=cap)return 0;used=(size_t)n;
     {uint8_t bytes[50];static const char hex[]="0123456789abcdef";mttl_schedule_pack(&s->schedule,bytes);for(i=0;i<50;i++){out[used++]=hex[bytes[i]>>4];out[used++]=hex[bytes[i]&15];}}
     n=snprintf(out+used,cap-used,"\",\"button_lock\":%u,\"timer_minutes\":[%u,%u,%u,%u]}",(unsigned)s->button_lock,(unsigned)s->timer_minutes[0],(unsigned)s->timer_minutes[1],(unsigned)s->timer_minutes[2],(unsigned)s->timer_minutes[3]);return n>0&&(size_t)n<cap-used?used+(size_t)n:0;
+}
+
+void local_api_relay_handler(struct httpd_conn *conn) {
+    if (!g_device_app) {
+        httpd_response_internal_server_error(conn, "Device not initialized");
+        return;
+    }
+
+    char *ch_str = NULL;
+    char *state_str = NULL;
+    int channel = -1;
+    uint8_t state = 0;
+
+    if (httpd_request_get_query_key(conn, "ch", &ch_str) == 0 && ch_str != NULL) {
+        channel = atoi(ch_str) - 1;
+        httpd_free(ch_str);
+    }
+
+    if (httpd_request_get_query_key(conn, "state", &state_str) == 0 && state_str != NULL) {
+        state = (uint8_t)(atoi(state_str) != 0 ? 1 : 0);
+        httpd_free(state_str);
+    }
+
+    if (channel >= 0 && channel <= 3) {
+        mttl_device_command(g_device_app, (uint8_t)channel, state);
+        const char *response = "{\"status\":\"success\"}";
+        httpd_response_write_header_start(conn, "200 OK", "application/json", strlen(response));
+        httpd_response_write_header_finish(conn);
+        httpd_response_write_data(conn, (uint8_t *)response, strlen(response));
+    } else {
+        httpd_response_bad_request(conn, "{\"status\":\"error\",\"msg\":\"Invalid channel\"}");
+    }
 }
