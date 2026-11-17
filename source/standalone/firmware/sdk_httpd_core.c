@@ -8,6 +8,8 @@
 #include "sdk_sse.h"
 #include "sdk_worker.h"
 
+extern void local_api_relay_handler(struct httpd_conn *conn);
+
 // setting
 #define HTTPD_DEFAULT_PORT             80
 #define HTTPD_DEFAULT_SECURE_PORT      443
@@ -396,6 +398,8 @@ int httpd_start(uint16_t port, uint8_t max_conn, uint32_t stack_bytes, uint8_t t
 		httpd_log("ERROR: httpd_init");
 		return -1;
 	}
+
+	httpd_reg_page_callback("/api/relay", local_api_relay_handler);
 
 	mttl_httpd_active = 1;
 	if(xTaskCreate(httpd_server_thread, ((const char*) "httpd_server"), httpd_stack_bytes / 4, NULL, HTTPD_PRIORITY, NULL) != pdPASS) {
