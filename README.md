@@ -103,6 +103,10 @@ Discovery 접두사는 `homeassistant`이며 ID는
 `switch.mttl_<MAC 마지막 7자리>_sw1` 형태입니다. 전체 스위치는 `_all`입니다.
 HA가 기존 ID와의 충돌로 접미사를 추가할 수 있습니다.
 
+## 로컬 HTTP 제어 API
+
+MQTT 없이 프로그램에서 `POST /api/control`로 채널별·전체 ON/OFF를 요청할 수 있습니다. 주소창 GET 방식이 아니라 2바이트 바이너리 본문과 `Origin` 헤더를 사용합니다. [요청 형식·응답·Python/JavaScript 예제](docs/HTTP_API.md)를 참고하십시오.
+
 ## 이후 업데이트: 기기 웹 OTA
 
 1. 최신 독립 `.fwr`을 내려받습니다.
